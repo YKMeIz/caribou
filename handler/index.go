@@ -9,7 +9,9 @@ func indexHandle(w http.ResponseWriter) {
 	w.Header().Set("Link", defaultLinkHeaderValue)
 	mw := minifyer.Writer("text/html", w)
 
-	err := tpl.Lookup("index.tpl").ExecuteTemplate(mw, "index", nil)
+	err := tpl.Lookup("index.tpl").ExecuteTemplate(mw, "index", struct {
+		Domain string
+	}{"caribou.ykmeiz.dev"})
 	_ = mw.Close()
 
 	if err != nil {

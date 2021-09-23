@@ -2,8 +2,8 @@ package handler
 
 import (
 	"encoding/json"
-	"github.com/YKMeIz/caribou/cache"
-	pill "github.com/YKMeIz/caribou/parser"
+	"github.com/YKMeIz/KV"
+	"github.com/YKMeIz/Pill"
 	"github.com/YKMeIz/caribou/util"
 	"net/http"
 	"path/filepath"
@@ -11,7 +11,12 @@ import (
 	"time"
 )
 
-var standardTTL = time.Duration(24 * time.Hour)
+var (
+	standardTTL = time.Duration(24 * time.Hour)
+	cache       = KV.NewNameSpace(KV.Config{
+		DiskLess: true,
+	})
+)
 
 func apiHandle(w http.ResponseWriter, req *http.Request) {
 	base := filepath.Base(req.URL.Path)
@@ -24,9 +29,9 @@ func apiHandle(w http.ResponseWriter, req *http.Request) {
 }
 
 func getMetadata(id string) []byte {
-	b, err := cache.LoadBytes(id)
+	b, err := cache.Get([]byte(id))
 
-	if err == cache.NoKeyError {
+	if err != nil {
 		info, err := pill.Pixiv(id)
 		if err != nil {
 			util.LogError(err)
@@ -40,7 +45,7 @@ func getMetadata(id string) []byte {
 		}
 	}
 
-	err = cache.Store(id, b, standardTTL)
+	err = cache.Put([]byte(id), b, standardTTL)
 	if err != nil {
 		util.LogError(err)
 		return nil

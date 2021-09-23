@@ -2,7 +2,7 @@ package handler
 
 import (
 	"encoding/json"
-	pill "github.com/YKMeIz/caribou/parser"
+	"github.com/YKMeIz/Pill"
 	"github.com/YKMeIz/caribou/util"
 	"net/http"
 	"path/filepath"

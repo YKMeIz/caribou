@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	tpl *template.Template
+	tpl      *template.Template
 	minifyer *minify.M
 )
 
