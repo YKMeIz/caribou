@@ -11,7 +11,7 @@ func indexHandle(w http.ResponseWriter) {
 
 	err := tpl.Lookup("index.tpl").ExecuteTemplate(mw, "index", struct {
 		Domain string
-	}{"caribou.ykmeiz.dev"})
+	}{"caribou-archive.ykmeiz.dev"})
 	_ = mw.Close()
 
 	if err != nil {
